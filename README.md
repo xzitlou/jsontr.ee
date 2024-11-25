@@ -1,5 +1,5 @@
 # jsontr.ee
-Effortlessly visualize JSON structures as interactive and dynamic tree diagrams.
+Effortlessly visualize JSON structures as interactive and dynamic tree diagrams. [See example](https://jsontr.ee/)
 
 ## Description:
 jsontr.ee is a lightweight JavaScript library that transforms JSON data into beautifully rendered, interactive tree diagrams using SVG. Designed for simplicity and flexibility, it supports both arrays and nested objects, ensuring clear and intuitive visualizations of complex data structures.
