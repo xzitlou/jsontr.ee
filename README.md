@@ -21,7 +21,7 @@ jsontr.ee is a lightweight JavaScript library that transforms JSON data into bea
 ### How to Use
 
 To get started, include the jsontr.ee library in your HTML:
-```
+```html
 <script src="path/to/jsontr.ee.js"></script>
 ```
 
@@ -30,7 +30,7 @@ Basic Usage
 1. Prepare Your JSON Data: Ensure you have your JSON data ready. For example:
 javascript
 
-```
+```javascript
 const jsonData = {
     "name": "Lou Alcalá",
     "projects": [
@@ -50,13 +50,13 @@ const jsonData = {
 
 2. Create a Container for the Diagram: Add a <div> element in your HTML where the diagram will be rendered.
 
-```
+```html
 <div id="json-tree"></div>
 ```
 
 3. Render the Tree Diagram: Use the jsontr.ee function to visualize the JSON data.
 
-```
+```javascript
 const container = document.getElementById('json-tree');
 container.innerHTML = generateJSONTree(jsonData);
 ```
