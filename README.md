@@ -60,3 +60,14 @@ const jsonData = {
 const container = document.getElementById('json-tree');
 container.innerHTML = generateJSONTree(jsonData);
 ```
+
+4. You can customize your graph with CSS
+
+```css
+/* Change node styles */
+rect {
+    fill: #ffffff !important; /* background white */
+    stroke: #000000 !important; /* border black */
+    stroke-width: 2pt !important; /* border width */
+}
+```
