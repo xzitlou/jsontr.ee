@@ -27,8 +27,9 @@ To get started, include the jsontr.ee library in your HTML:
 
 Basic Usage
 
-1. Prepare Your JSON Data: Ensure you have your JSON data ready. For example:
-javascript
+1. Prepare Your JSON Data:
+
+Ensure you have your JSON data ready. For example:
 
 ```javascript
 const jsonData = {
@@ -48,13 +49,17 @@ const jsonData = {
 };
 ```
 
-2. Create a Container for the Diagram: Add a <div> element in your HTML where the diagram will be rendered.
+2. Create a Container for the Diagram:
+
+Add a `<div>` element in your HTML where the diagram will be rendered.
 
 ```html
 <div id="json-tree"></div>
 ```
 
-3. Render the Tree Diagram: Use the jsontr.ee function to visualize the JSON data.
+3. Render the Tree Diagram:
+
+Use the jsontr.ee function to visualize the JSON data.
 
 ```javascript
 const container = document.getElementById('json-tree');
