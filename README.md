@@ -76,3 +76,15 @@ rect {
     stroke-width: 2pt !important; /* border width */
 }
 ```
+
+## VS Code Extension
+
+You can install this extension directly from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=LouAlcala.json-tree).
+
+or follow these instructions:
+
+1. Open the Extensions view in Visual Studio Code (`Ctrl+Shift+X` or `Cmd+Shift+X`).
+2. Search for `JSON Tree Visualizer`
+3. Click **Install**.
+4. Done! Run the command `Visualize JSON as Tree` from the Command Palette.
+5. 
