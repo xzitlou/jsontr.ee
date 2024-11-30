@@ -87,4 +87,3 @@ or follow these instructions:
 2. Search for `JSON Tree Visualizer`
 3. Click **Install**.
 4. Done! Run the command `Visualize JSON as Tree` from the Command Palette.
-5. 
