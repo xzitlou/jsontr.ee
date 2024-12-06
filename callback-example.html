@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="jsontr.ee.js"></script>
+    <script lang="javascript">
+        let jsonData = "";
+        
+        // Callback function that sets the color of the node based on values of the node elements.
+        function colorCallback(lines) {
+            let fillColor = null;
+            let strokeColor = null;
+            lines.forEach(line => {
+                if (line.key === "name" && line.value === '"PixSpeed.com"') {
+                    fillColor = 'lightgreen';
+                }
+            });
+            return { fillColor, strokeColor };
+        }
+
+        // Function to read the file and place the content in the jsonData variable. Then render the diagram.
+        function readFile(input) {
+            const container = document.getElementById("json-tree");
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // The content of the file is placed in the jsonData variable as JSON and not text, after removing the newlines and carriage returns
+                jsonData = JSON.parse(e.target.result.replace(/(\r\n|\n|\r)/gm, ""));
+                container.innerHTML = generateJSONTree(jsonData,colorCallback);
+            }
+            reader.readAsText(file);
+        }
+    </script>
+</head>
+<body>
+    <!-- A button to select a file, open it, then place the content in the jsonData variable -->
+    <input type="file" id="file-input" onchange="readFile(this)">
+<p></p>
+<div id="json-tree"></div>
+</body>
+
+</html>
