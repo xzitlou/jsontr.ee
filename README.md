@@ -11,12 +11,14 @@ jsontr.ee is a lightweight JavaScript library that transforms JSON data into bea
 - Supports arrays and nested objects with labeled parent nodes.
 - Interactive SVG-based rendering with customizable styles.
 - Lightweight and easy to integrate into any web project.
+- Supports callback for setting node colors based on values.
 
 ### Perfect for:
 
 - Debugging JSON structures.
 - Visualizing API responses.
 - Representing hierarchical data.
+- Visualising Decision Tree execution paths.
 
 ### How to Use
 
@@ -75,8 +77,13 @@ rect {
     stroke: #000000 !important; /* border black */
     stroke-width: 2pt !important; /* border width */
 }
-```
-
+```  
+  
+#### Callback Example Page
+A callback can be used to customize colors based on logic.  
+See callback-example.html  
+Use the example.json as input.  
+  
 ## VS Code Extension
 
 You can install this extension directly from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=LouAlcala.json-tree).

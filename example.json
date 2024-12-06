@@ -1,0 +1,15 @@
+{
+    "name": "Lou Alcalá",
+    "projects": [
+        {
+            "name": "JSONtr.ee",
+            "description": "JSON Formatter, Validator & Viewer Online | JSONtr.ee",
+            "url": "https://jsontr.ee"
+        },
+        {
+            "name": "PixSpeed.com",
+            "description": "Image compressor | Compress and optimize WebP, PNG, JPG, JPeG and AVIF",
+            "url": "https://pixspeed.com"
+        }
+    ]
+}

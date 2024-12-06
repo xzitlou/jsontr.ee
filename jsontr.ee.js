@@ -4,7 +4,7 @@
  * @param {Object} json - El objeto JSON que se va a visualizar.
  * @returns {string} - Un string que contiene el SVG generado.
  */
-function generateJSONTree(json) {
+function generateJSONTree(json, colorCallback = null) {
     const padding = 10; // Espaciado interno de cada nodo
     const lineHeight = 18; // Altura de cada línea de texto
     const fontSize = 12; // Tamaño de la fuente de texto
@@ -103,7 +103,7 @@ function generateJSONTree(json) {
      * @param {string|null} parentId - ID del nodo padre (si existe).
      * @param {Object|null} parentPosition - Posición del nodo padre (si existe).
      */
-    function buildTree(obj, x, y, parentId = null, parentPosition = null) {
+    function buildTree(obj, x, y, parentId = null, parentPosition = null, colorCallback) {
         const {width, height, lines} = calculateNodeSize(obj); // Calcular tamaño del nodo
         const adjustedY = adjustPosition(x, y, width, height); // Ajustar posición Y
         const currentId = `node-${nodeId++}`; // Crear ID único para el nodo
@@ -116,10 +116,22 @@ function generateJSONTree(json) {
             </div>
         `).join("");
 
+        let rectFillColor = "#f6f8fa";
+        let rectStrokeColor = "#475872";
+        if (colorCallback) {
+            const { fillColor, strokeColor } = colorCallback(lines);
+            if (fillColor) {
+                rectFillColor = fillColor;
+            }
+            if (strokeColor) {
+                rectStrokeColor = strokeColor;
+            }
+        }
+
         // Agregar el nodo al contenido SVG
         svgContent.push(`
         <g id="${currentId}" transform="translate(${x}, ${adjustedY})">
-            <rect width="${width}" height="${height}" rx="5" ry="5" style="fill:#f6f8fa;stroke:#475872;stroke-width:1"></rect>
+            <rect width="${width}" height="${height}" rx="5" ry="5" style="fill:${rectFillColor};stroke:${rectStrokeColor};stroke-width:1"></rect>
             <foreignObject width="${width}" height="${height}">
                 <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:${fontFamily}; font-size:${fontSize}px; line-height:${lineHeight}px; padding:${padding}px; box-sizing:border-box;">
                     ${nodeContent}
@@ -159,16 +171,16 @@ function generateJSONTree(json) {
                     const listNode = {[`${line.key} (${value.length})`]: "Array"}; // Nodo para el array
                     const listY = nextYOffset; // Y para el nodo del array
 
-                    buildTree(listNode, childX, listY, currentId, {x, y: adjustedY, width, height}); // Construir nodo para el array
+                    buildTree(listNode, childX, listY, currentId, {x, y: adjustedY, width, height, colorCallback}); // Construir nodo para el array
 
                     value.forEach((item, index) => {
                         const childY = nextYOffset + index * (lineHeight + 30); // Posición Y para cada ítem del array
-                        buildTree(item, childX + calculateNodeSize(listNode).width + 100, childY, `node-${nodeId - 1}`, {
+                        buildTree(item, childX + calculateNodeSize(listNode).width + 100, childY, `node-${nodeId - 1, colorCallback}`, {
                             x: childX,
                             y: listY,
                             width: calculateNodeSize(listNode).width,
                             height: calculateNodeSize(listNode).height,
-                        });
+                        }, colorCallback);
                     });
 
                     nextYOffset += value.length * (lineHeight + 30) + 50; // Ajustar Y para el siguiente nodo
@@ -177,7 +189,7 @@ function generateJSONTree(json) {
                     const nestedParentY = nextYOffset; // Y para el nodo padre anidado
 
                     // Crear un nodo para el nombre de la propiedad que contiene el objeto anidado
-                    buildTree(nestedParentNode, childX, nestedParentY, currentId, {x, y: adjustedY, width, height});
+                    buildTree(nestedParentNode, childX, nestedParentY, currentId, {x, y: adjustedY, width, height}, colorCallback);
 
                     // Crear los nodos hijos del objeto anidado
                     buildTree(value, childX + calculateNodeSize(nestedParentNode).width + 100, nestedParentY, `node-${nodeId - 1}`, {
@@ -185,7 +197,7 @@ function generateJSONTree(json) {
                         y: nestedParentY,
                         width: calculateNodeSize(nestedParentNode).width,
                         height: calculateNodeSize(nestedParentNode).height,
-                    });
+                    }, colorCallback);
 
                     nextYOffset += calculateNodeSize(value).height + 50; // Ajustar Y después de procesar el objeto anidado
                 }
@@ -201,13 +213,13 @@ function generateJSONTree(json) {
                             y: listY,
                             width: width,
                             height: height,
-                        });
+                        }, colorCallback);
 
                         nextYOffset += calculateNodeSize(item).height + 30; // Ajustar Y después de procesar el objeto anidado
                     } else if (Array.isArray(item)) {
                         const listNode = {[`(${item.length})`]: "Array"}; // Nodo para el array
 
-                        buildTree(listNode, childX, nextYOffset, currentId, {x, y: adjustedY, width, height}); // Construir nodo para el array
+                        buildTree(listNode, childX, nextYOffset, currentId, {x, y: adjustedY, width, height, colorCallback}); // Construir nodo para el array
 
                         item.forEach((subitem, subindex) => {
                             const childY = nextYOffset + subindex * (lineHeight + 30); // Posición Y para cada ítem del array
@@ -216,7 +228,7 @@ function generateJSONTree(json) {
                                 y: listY,
                                 width: calculateNodeSize(listNode).width,
                                 height: calculateNodeSize(listNode).height,
-                            });
+                            }, colorCallback);
                         });
 
                         nextYOffset += item.length * (lineHeight + 30) + 50; // Ajustar Y para el siguiente nodo
@@ -226,7 +238,7 @@ function generateJSONTree(json) {
                             y: listY,
                             width: width,
                             height: height,
-                        });
+                        }, colorCallback);
 
                         nextYOffset += calculateNodeSize(item).height + 30;
                     }
@@ -240,7 +252,7 @@ function generateJSONTree(json) {
     }
 
     // Iniciar la construcción del árbol con el JSON proporcionado
-    buildTree(json, 50, 50);
+    buildTree(json, 50, 50, null, null, colorCallback);
 
     // Retornar el contenido SVG generado
     return `
