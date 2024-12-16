@@ -66,7 +66,24 @@ const container = document.getElementById('json-tree');
 container.innerHTML = generateJSONTree(jsonData);
 ```
 
-4. You can customize your graph with CSS
+4. Graph customization
+
+- Customize with initial options
+
+```javascript
+/* Change graph styles */
+const options = {
+    arrowColor: "#475872",
+    nodeBorderColor: "#475872",
+    nodeBackgroundColor: "#f6f8fa",
+    keyColor: "#b16b2a",
+    valueColor: "#008000",
+};
+// Pass options
+generateJSONTree(jsonData, options);
+```
+
+- Customize with CSS
 
 ```css
 /* Change node styles */
