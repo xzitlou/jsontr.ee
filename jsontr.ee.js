@@ -2,13 +2,23 @@
  * https://github.com/xzitlou/jsontr.ee - MIT License
  * Genera una visualización SVG de un objeto JSON como un árbol.
  * @param {Object} json - El objeto JSON que se va a visualizar.
+ * @param {Object} options - Las opciones de customización del gráfico.
  * @returns {string} - Un string que contiene el SVG generado.
  */
-function generateJSONTree(json) {
-    const padding = 10; // Espaciado interno de cada nodo
-    const lineHeight = 18; // Altura de cada línea de texto
-    const fontSize = 12; // Tamaño de la fuente de texto
-    const fontFamily = "monospace"; // Tipo de fuente a usar
+function generateJSONTree(json, options = {}) {
+    const defaultOptions = {
+        arrowColor: "#475872",
+        nodeBorderColor: "#475872",
+        nodeBackgroundColor: "#f6f8fa",
+        keyColor: "#b16b2a",
+        valueColor: "#008000",
+        padding: 10,
+        lineHeight: 18,
+        fontSize: 12,
+        fontFamily: "monospace",
+    };
+    const config = {...defaultOptions, ...options};
+    const {arrowColor, nodeBorderColor, nodeBackgroundColor, keyColor, valueColor, padding, lineHeight, fontSize, fontFamily} = config;
     let svgContent = []; // Contenido SVG que se generará
     let edges = []; // Almacena las conexiones entre nodos
     let nodeId = 0; // Contador para identificar nodos
@@ -111,15 +121,15 @@ function generateJSONTree(json) {
         // Genera el contenido del nodo usando divs y display:flex
         const nodeContent = lines.map(line => `
             <div style="display: flex;">
-                <span class="json-key" style="margin-right: 5px;">${line.key ? `${line.key}:` : ""}</span>
-                <span class="json-value">${line.value}</span>
+                <span class="json-key" style="margin-right: 5px; color: ${keyColor}">${line.key ? `${line.key}:` : ""}</span>
+                <span class="json-value" style="color: ${valueColor}">${line.value}</span>
             </div>
         `).join("");
 
         // Agregar el nodo al contenido SVG
         svgContent.push(`
         <g id="${currentId}" transform="translate(${x}, ${adjustedY})">
-            <rect width="${width}" height="${height}" rx="5" ry="5" style="fill:#f6f8fa;stroke:#475872;stroke-width:1"></rect>
+            <rect width="${width}" height="${height}" rx="5" ry="5" style="fill:${nodeBackgroundColor};stroke:${nodeBorderColor};stroke-width:1"></rect>
             <foreignObject width="${width}" height="${height}">
                 <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:${fontFamily}; font-size:${fontSize}px; line-height:${lineHeight}px; padding:${padding}px; box-sizing:border-box;">
                     ${nodeContent}
@@ -140,7 +150,7 @@ function generateJSONTree(json) {
             // Agregar la conexión entre el nodo padre y el hijo
             edges.push(`
             <path d="M${parentRightX},${parentCenterY} C${(parentRightX + childCenterX - horizontalPadding) / 2},${parentCenterY} ${(parentRightX + childCenterX - horizontalPadding) / 2},${childCenterY} ${childCenterX},${childCenterY}"
-                  style="fill:none;stroke:#475872;stroke-width:1;marker-end:url(#arrowhead);" />
+                  style="fill:none;stroke:${arrowColor};stroke-width:1;marker-end:url(#arrowhead);" />
         `);
         }
 
@@ -247,7 +257,7 @@ function generateJSONTree(json) {
         <svg xmlns="http://www.w3.org/2000/svg" width="${maxX + 150}" height="${maxY + 150}">
             <defs>
                 <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-                    <polygon points="0 0, 10 3.5, 0 7" style="fill:#475872;" />
+                    <polygon points="0 0, 10 3.5, 0 7" style="fill:${arrowColor};" />
                 </marker>
             </defs>
             ${edges.join("")}
