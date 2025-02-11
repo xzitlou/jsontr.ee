@@ -246,7 +246,8 @@ function generateJSONTree(json, options = {}) {
 
         // Ajustar `maxY` y `maxX` para el SVG
         maxX = Math.max(maxX, x + width);
-        maxY = Math.max(maxY, nextYOffset);
+        // maxY = Math.max(maxY, nextYOffset); <-- TODO: JSONs con root mas grande que nodos hijos generan SVG cortado
+        maxY = Math.max(maxY, adjustedY + height);
     }
 
     // Iniciar la construcción del árbol con el JSON proporcionado
